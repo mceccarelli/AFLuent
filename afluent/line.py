@@ -3,12 +3,19 @@
 import math
 from typing import List
 
-# Scores:
+# Scores:   # New Formula
 TARAN = "tarantula"
 OCHIAI = "ochiai"
 OCHIAI2 = "ochiai2"
 DSTAR = "dstar"
-OP2 = "op2"  # New formula
+OP2 = "op2"
+BARINEL = "barinel"
+JACCARD = "jaccard"
+KULCZYNSKI = "kulczynski"
+KULCZYNSKI2 = "kulczynski2"
+MCCON = "mccon"
+MINUS = "minus"
+# ZOLTAR = "zoltar"
 
 
 # Tiebreakers
@@ -36,12 +43,19 @@ class Line:
         ] = []  # List of test functions that ran this Line and passed
         self.failed_by: List[str] = []  # the names of those that failed
         self.skipped_by: List[str] = []
-        self.sus_scores = {  # default values for our formulas
+        self.sus_scores = {  # default values for our formulas # New Formula
             TARAN: -1.0,
             OCHIAI: -1.0,
             DSTAR: -1.0,
             OCHIAI2: -1.0,
-            OP2: -1.0,  # New formula
+            OP2: -1.0,
+            BARINEL: -1.0,
+            JACCARD: -1.0,
+            KULCZYNSKI: -1.0,
+            KULCZYNSKI2: -1.0,
+            MCCON: -1.0,
+            MINUS: -1.0,
+            # ZOLTAR: -1.0,
         }
         self.tiebreakers = {
             CYCLOMATIC: 0.0,
@@ -51,7 +65,7 @@ class Line:
             RANDOM: 0.0,
         }
 
-    def sus(self, method: str, passed_total: int, failed_total: int, power=3):
+    def sus(self, method: str, passed_total: int, failed_total: int, power=3): # New Formula
         """Calculate the suspiciousness score using the passed method.
 
         Args:
@@ -79,16 +93,66 @@ class Line:
                 passed_total,
                 failed_total,
             )
-        elif method.lower() == OP2:  # New formula
+        elif method.lower() == OP2:
             self.sus_scores[OP2] = Line.op2(
                 len(self.failed_by),
                 len(self.passed_by),
                 passed_total,
+                failed_total,
             )
+        elif method.lower() == BARINEL:
+            self.sus_scores[BARINEL] = Line.barinel(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        elif method.lower() == JACCARD:
+            self.sus_scores[JACCARD] = Line.jaccard(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        elif method.lower() == KULCZYNSKI:
+            self.sus_scores[KULCZYNSKI] = Line.kulczynski(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        elif method.lower() == KULCZYNSKI2:
+            self.sus_scores[KULCZYNSKI2] = Line.kulczynski2(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        elif method.lower() == MCCON:
+            self.sus_scores[MCCON] = Line.mccon(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        elif method.lower() == MINUS:
+            self.sus_scores[MINUS] = Line.minus(
+                len(self.failed_by),
+                len(self.passed_by),
+                passed_total,
+                failed_total,
+            )
+        # elif method.lower() == ZOLTAR:
+        #     self.sus_scores[ZOLTAR] = Line.zoltar(
+        #         len(self.failed_by),
+        #         len(self.passed_by),
+        #         passed_total,
+        #         failed_total,
+        #     )
         else:
             raise Exception("ERROR: unknown suspiciousness method")
 
-    def sus_all(
+    def sus_all( # New Formula
         self, passed_total: int, failed_total: int, power=3
     ):  # use all formulas
         """Calculate the suspiciousness score for all available methods."""
@@ -96,13 +160,20 @@ class Line:
         self.sus(OCHIAI, passed_total, failed_total)
         self.sus(DSTAR, passed_total, failed_total, power=power)
         self.sus(OCHIAI2, passed_total, failed_total)
-        self.sus(OP2, passed_total, failed_total)  # New formula
+        self.sus(OP2, passed_total, failed_total)
+        self.sus(BARINEL, passed_total, failed_total)
+        self.sus(JACCARD, passed_total, failed_total)
+        self.sus(KULCZYNSKI, passed_total, failed_total)
+        self.sus(KULCZYNSKI2, passed_total, failed_total)
+        self.sus(MCCON, passed_total, failed_total)
+        self.sus(MINUS, passed_total, failed_total)
+        # self.sus(ZOLTAR, passed_total, failed_total)
 
     def as_dict(self):  # give me the representation of this object as a dictionary
         """Return line information as json writable dictionary."""
         return self.__dict__
 
-    def as_csv(self):  # give me the representation of this object as a csv
+    def as_csv(self):  # give me the representation of this object as a csv # New Formula
         """Return line information as csv writable list."""
         return [
             self.path,
@@ -111,7 +182,14 @@ class Line:
             self.sus_scores[OCHIAI],
             self.sus_scores[OCHIAI2],
             self.sus_scores[DSTAR],
-            self.sus_scores[OP2],  # New formula
+            self.sus_scores[OP2],
+            self.sus_scores[BARINEL],
+            self.sus_scores[JACCARD],
+            self.sus_scores[KULCZYNSKI],
+            self.sus_scores[KULCZYNSKI2],
+            self.sus_scores[MCCON],
+            self.sus_scores[MINUS],
+            # self.sus_scores[ZOLTAR],
         ]
 
     def sus_text(self, methods):
@@ -183,9 +261,9 @@ class Line:
         score = math.pow(failed_cover, power) / (passed_cover + uncovered_failed)
         return round(score, 4)
 
-    # New formula
+    # New Formula
     @staticmethod
-    def op2(failed_cover: int, passed_cover: int, total_passed: int) -> float:
+    def op2(failed_cover: int, passed_cover: int, total_passed: int, total_failed: int) -> float:
         """Calculate suspiciousness score using the op2 approach.
 
         Args:
@@ -198,6 +276,201 @@ class Line:
         """
         score = failed_cover - (passed_cover / (total_passed + 1))
         return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def barinel(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the Barinel approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using Barinel
+        """
+
+        # if total_failed == 0 or failed_cover == 0:
+        #     return best
+        # if total_passed == 0:
+        #     return worst
+
+        score = 1 - passed_cover / (passed_cover + failed_cover)
+
+        return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def jaccard(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the Jaccard approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using Jaccard
+        """
+        #check
+        nf = total_failed - failed_cover
+        score = failed_cover / (failed_cover + passed_cover + nf)
+
+        return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def kulczynski(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the Kulczynski approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using Kulczynski
+        """
+
+        #check
+        nf = total_failed - failed_cover
+
+        if passed_cover + nf == 0:
+            return 0
+
+        score = failed_cover / (passed_cover + nf)
+
+        return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def kulczynski2(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the Kulczynski2 approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using Kulczynski2
+        """
+        #check
+        nf = total_failed - failed_cover
+
+        if failed_cover + nf == 0:
+            return 0
+        if passed_cover + failed_cover == 0:
+            return 0
+
+        score = 0.5 * (failed_cover / (failed_cover + nf) + failed_cover / (failed_cover + passed_cover))
+
+        return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def mccon(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the McCon approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using McCon
+        """
+        #check
+        nf = total_failed - failed_cover
+
+        if failed_cover + nf == 0:
+            return -1
+        if failed_cover + passed_cover == 0:
+            return -1
+
+        score = (failed_cover * failed_cover - (total_failed - failed_cover) * passed_cover) / ((failed_cover + nf) * (failed_cover + passed_cover))
+
+        return round(score, 4)
+
+    # New Formula
+    @staticmethod
+    def minus(
+        failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    ) -> float:
+        """Calculate suspiciousness score using the Minus approach.
+
+        Args:
+            failed_cover (int): total number of failed test cases that cover the line
+            passed_cover (int): total number of passed test cases that cover the line
+            total_passed (int): total number of passed test cases
+            total_failed (int): total number of failed test cases
+
+        Returns:
+            float: suspiciousness score using Minus
+        """
+        #check
+        nf = total_failed - failed_cover
+        np = total_passed - passed_cover
+
+        if failed_cover + nf == 0:
+            return -1
+        if passed_cover + np == 0:
+            return 1
+
+        if ((failed_cover / (failed_cover + nf)) + (passed_cover / (passed_cover + np))) == 0:
+            return 0
+
+        if (1 - failed_cover / (failed_cover + nf) + 1 - passed_cover / (passed_cover + np)) == 0:
+            return 0
+
+        score = ((failed_cover / (failed_cover + nf)) / ((failed_cover / (failed_cover + nf)) + (passed_cover / (passed_cover + np)))) - ((1 - failed_cover / (failed_cover + nf)) / (1 - failed_cover / (failed_cover + nf) + 1 - passed_cover / (passed_cover + np)))
+
+        return round(score, 4)
+
+    # # New Formula
+    # @staticmethod
+    # def zoltar(
+    #     failed_cover: int, passed_cover: int, total_passed: int, total_failed: int
+    # ) -> float:
+    #     """Calculate suspiciousness score using the Zoltar approach.
+    #
+    #     Args:
+    #         failed_cover (int): total number of failed test cases that cover the line
+    #         passed_cover (int): total number of passed test cases that cover the line
+    #         total_passed (int): total number of passed test cases
+    #         total_failed (int): total number of failed test cases
+    #
+    #     Returns:
+    #         float: suspiciousness score using Zoltar
+    #     """
+    #
+    #     if total_failed == 0 or failed_cover == 0:
+    #         return 3
+    #     if total_passed == 0:
+    #         return 0
+    #
+    #     #check
+    #     nf = total_failed - failed_cover
+    #     np = total_passed - passed_cover
+    #     score = failed_cover / (failed_cover + nf + passed_cover + 10000 * nf * passed_cover / failed_cover)
+    #
+    #     return round(score, 4)
 
     @staticmethod
     def ochiai2(
