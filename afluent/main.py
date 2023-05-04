@@ -172,6 +172,7 @@ def pytest_addoption(parser):
         help="Type of tie breaking approach.",
     )
 
+
 # parse the command line arguments
 def pytest_cmdline_main(config):
     """Check if AFLuent is enabled and register the plugin object."""
