@@ -12,13 +12,13 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Python 3.9.6
-        uses: actions/setup-python@v2
-        id: setup-python
-        with:
-          python-version: 3.9.6
+      # - name: Checkout repository
+         uses: actions/checkout@v2
+      # - name: Setup Python 3.9.6
+      #   uses: actions/setup-python@v2
+      #   id: setup-python
+      #   with:
+      #     python-version: 3.9.6
       - name: Setup poetry
         uses: Gr1N/setup-poetry@v7
       - name: Install dependencies
