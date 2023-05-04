@@ -23,12 +23,12 @@ jobs:
         uses: Gr1N/setup-poetry@v7
       - name: Install dependencies
         run: poetry install
-      - name: Run black
-        if: always()
-        run: poetry run task black
-      # - name: Run flake8
+      # - name: Run black
       #   if: always()
-      #   run: poetry run task flake8
+      #   run: poetry run task black
+      # # - name: Run flake8
+        if: always()
+        run: poetry run task flake8
       # - name: Run pydocstyle
       #   if: always()
       #   run: poetry run task pydocstyle
