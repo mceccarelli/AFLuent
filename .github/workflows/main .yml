@@ -26,7 +26,7 @@ jobs:
       # - name: Run black
       #   if: always()
       #   run: poetry run task black
-      # # - name: Run flake8
+      - name: Run flake8
         if: always()
         run: poetry run task flake8
       # - name: Run pydocstyle
