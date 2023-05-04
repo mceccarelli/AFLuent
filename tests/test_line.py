@@ -44,9 +44,6 @@ def test_tarantula(
         == expected_score
     )
 
-
-
-
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
     [
@@ -86,12 +83,6 @@ def test_barinel(
         line.Line.barinel(failed_cover, passed_cover, total_passed, total_failed)
         == expected_score
     )
-
-
-
-
-
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
@@ -133,12 +124,6 @@ def test_jaccard(
         == expected_score
     )
 
-
-
-
-
-
-
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
     [
@@ -178,11 +163,6 @@ def test_kulczynski(
         line.Line.kulczynski(failed_cover, passed_cover, total_passed, total_failed)
         == expected_score
     )
-
-
-
-
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
@@ -224,12 +204,6 @@ def test_kulczynski2(
         == expected_score
     )
 
-
-
-
-
-
-
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
     [
@@ -269,11 +243,6 @@ def test_mccon(
         line.Line.mccon(failed_cover, passed_cover, total_passed, total_failed)
         == expected_score
     )
-
-
-
-
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
@@ -315,11 +284,6 @@ def test_minus(
         == expected_score
     )
 
-
-
-
-
-
 # @pytest.mark.parametrize(
 #     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
 #     [
@@ -360,10 +324,6 @@ def test_minus(
 #         == expected_score
 #     )
 
-
-
-
-
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_failed,expected_score",
     [
@@ -375,7 +335,6 @@ def test_minus(
 def test_ohiai(failed_cover, passed_cover, total_failed, expected_score):
     """Check that the ohiai formula is correct."""
     assert line.Line.ochiai(failed_cover, passed_cover, total_failed) == expected_score
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_failed,power,expected_score",
@@ -392,7 +351,6 @@ def test_dstar(failed_cover, passed_cover, total_failed, power, expected_score):
         line.Line.dstar(failed_cover, passed_cover, total_failed, power=power)
         == expected_score
     )
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",
@@ -412,7 +370,6 @@ def test_ochiai2(
         line.Line.ochiai2(failed_cover, passed_cover, total_passed, total_failed)
         == expected_score
     )
-
 
 @pytest.mark.parametrize(
     "failed_cover,passed_cover,total_passed,total_failed,expected_score",

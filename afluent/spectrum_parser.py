@@ -280,11 +280,7 @@ class Spectrum:
         ) and sus_score == 0:
             return PALETTE["safe"]
 
-
-
-
-
-        if (
+        if ( # noqa: E303
             method in ["op2"] # New formula
         ) and sus_score > 1.3:
             return PALETTE["severe"]
@@ -304,11 +300,7 @@ class Spectrum:
         ) and sus_score < 0.3:
             return PALETTE["safe"]
 
-
-
-
-
-        if (
+        if ( # noqa: E303
             method in ["mccon", "minus"] # New formula
         ) and sus_score == 1:
             return PALETTE["severe"]
@@ -328,23 +320,13 @@ class Spectrum:
         ) and sus_score == -1:
             return PALETTE["safe"]
 
-
-
-
-
         if method == "dstar" and sus_score == float("inf"):
             return PALETTE["severe"]
 
         if method == "dstar" and sus_score <= 0:
             return PALETTE["safe"]
 
-
-
-
-
         if rank / out_of <= 0.2:
             return PALETTE["risky"]
-
-
 
         return PALETTE["mild"]

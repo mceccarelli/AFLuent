@@ -30,19 +30,6 @@ def pytest_addoption(parser):
         default=False,
         help="Enable AFLuent",
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
     afluent_group.addoption(
         "--tarantula",
         dest="afl_methods",
@@ -128,11 +115,6 @@ def pytest_addoption(parser):
     #     help="Enable fault localization using Zoltar",
     # )
 
-
-
-
-
-
     afluent_group.addoption(
         "--dstar",
         dest="afl_methods",
@@ -148,28 +130,6 @@ def pytest_addoption(parser):
         type=int,
         help="Power to use when calculating Dstar score, default to 3",
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     afluent_group.addoption(
         "--afl-results",
@@ -211,7 +171,6 @@ def pytest_addoption(parser):
         choices=["random", "cyclomatic", "logical", "enhanced"],
         help="Type of tie breaking approach.",
     )
-
 
 # parse the command line arguments
 def pytest_cmdline_main(config):

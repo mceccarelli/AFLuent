@@ -319,7 +319,7 @@ class Line:
         Returns:
             float: suspiciousness score using Jaccard
         """
-        #check
+        # check
         nf = total_failed - failed_cover
         score = failed_cover / (failed_cover + passed_cover + nf)
 
@@ -342,7 +342,7 @@ class Line:
             float: suspiciousness score using Kulczynski
         """
 
-        #check
+        # check
         nf = total_failed - failed_cover
 
         if passed_cover + nf == 0:
@@ -368,7 +368,7 @@ class Line:
         Returns:
             float: suspiciousness score using Kulczynski2
         """
-        #check
+        # check
         nf = total_failed - failed_cover
 
         if failed_cover + nf == 0:
@@ -396,7 +396,7 @@ class Line:
         Returns:
             float: suspiciousness score using McCon
         """
-        #check
+        # check
         nf = total_failed - failed_cover
 
         if failed_cover + nf == 0:
@@ -424,7 +424,7 @@ class Line:
         Returns:
             float: suspiciousness score using Minus
         """
-        #check
+        # check
         nf = total_failed - failed_cover
         np = total_passed - passed_cover
 
@@ -465,7 +465,7 @@ class Line:
     #     if total_passed == 0:
     #         return 0
     #
-    #     #check
+    #     # check
     #     nf = total_failed - failed_cover
     #     np = total_passed - passed_cover
     #     score = failed_cover / (failed_cover + nf + passed_cover + 10000 * nf * passed_cover / failed_cover)
